@@ -2,9 +2,9 @@
   <view class="home">
     <!-- 自定义组件---导航栏 -->
     <navbar></navbar>
-    <tab :list="tabList" @tab="tab"></tab>
+    <tab :list="tabList" :tabIndex="tabIndex" @tab="tab"></tab>
     <view class="home-list">
-      <list :tab="tabList"></list>
+      <list :tab="tabList" :activeIndex="activeIndex" @change="change"></list>
     </view>
 
   </view>
@@ -15,15 +15,20 @@
   export default {
     data() {
       return {
-        tabList: []
+        tabList: [],
+        tabIndex: 0,
+        activeIndex: 0
       }
     },
     onLoad() {
       this.getLabel()
     },
     methods: {
-      tab(data, index) {
-        // console.log(data, index)
+      change(current) {
+        this.tabIndex = current
+      },
+      tab(e) {
+        this.activeIndex = e.index
       },
       getLabel() {
         this.$api.get_label({
@@ -51,7 +56,8 @@
     flex-direction: column;
     flex: 1;
     overflow: hidden;
-    .home-list{
+
+    .home-list {
       flex: 1;
       box-sizing: border-box;
     }

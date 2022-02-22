@@ -23,6 +23,16 @@
         default () {
           return []
         }
+      },
+      tabIndex: {
+        type: Number,
+        default: 0
+      }
+    },
+    // 可以监听data或props值的变化
+    watch: {
+      tabIndex(newVal, oldVal) {
+        this.activeIndex = newVal
       }
     },
     data() {
