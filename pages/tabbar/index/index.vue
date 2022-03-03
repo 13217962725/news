@@ -21,22 +21,31 @@
       }
     },
     onLoad() {
+      uni.$on('labelChange', (res) => {
+        this.tabList = []
+        this.tabIndex = 0
+        this.activeIndex0
+        this.getLabel()
+      })
       this.getLabel()
     },
     methods: {
       change(current) {
         this.tabIndex = current
+        this.activeIndex = current
       },
       tab(e) {
         this.activeIndex = e.index
       },
       getLabel() {
-        this.$api.get_label({
-          name: 'get_label'
-        }).then((res) => {
+        this.$api.get_label().then((res) => {
           const {
             data
           } = res
+          console.log(data)
+          data.unshift({
+            name: '全部'
+          })
           this.tabList = data
         })
       }

@@ -3,10 +3,12 @@ import api from './common/api/index.js'
 
 // #ifndef VUE3
 import Vue from 'vue'
+import store from './store'
 Vue.config.productionTip = false
 Vue.prototype.$api = api
 App.mpType = 'app'
 const app = new Vue({
+  store,
   ...App
 })
 app.$mount()
