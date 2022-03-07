@@ -42,11 +42,11 @@
         <view class="detail-bottom_icons-box">
           <uni-icons type="chat" size="22" color="#f07373"></uni-icons>
         </view>
-        <view class="detail-bottom_icons-box">
-          <uni-icons type="heart" size="22" color="#f07373"></uni-icons>
+        <view class="detail-bottom_icons-box" @click="likeTap(formData._id)">
+          <uni-icons :type="formData.is_like?'heart-filled':'heart'" size="22" color="#f07373"></uni-icons>
         </view>
-        <view class="detail-bottom_icons-box">
-          <uni-icons type="hand-up" size="22" color="#f07373"></uni-icons>
+        <view class="detail-bottom_icons-box" @click="thumbsup(formData._id)">
+          <uni-icons :type="formData.is_thumbs_up?'hand-up-filled':'hand-up'" size="22" color="#f07373"></uni-icons>
         </view>
       </view>
     </view>
@@ -89,6 +89,15 @@
     },
     onReady() {},
     methods: {
+      // 点赞
+      thumbsup(article_id) {
+        this.setUpdateThumbs(article_id)
+      },
+      // 收藏
+      likeTap(article_id) {
+        this.setUpdateLike(article_id)
+      },
+      // 关注
       follow(author_id) {
         this.setUpdateAuthor(author_id)
       },
@@ -168,6 +177,7 @@
           this.commentsList = data
         })
       },
+      // 关注作者
       setUpdateAuthor(author_id) {
         uni.showLoading()
         this.$api.update_author({
@@ -178,6 +188,34 @@
           uni.showToast({
             title: this.formData.is_author_like ? '关注作者成功' : '取消关注作者',
             icon: 'none'
+          })
+        })
+      },
+      // 收藏文章
+      setUpdateLike(article_id) {
+        uni.showLoading()
+        this.$api.update_like({
+          article_id
+        }).then((res) => {
+          uni.hideLoading()
+          this.formData.is_like = !this.formData.is_like
+          uni.$emit('update_article')
+          uni.showToast({
+            title: this.formData.is_like ? '收藏成功' : '取消收藏',
+            icon: 'none'
+          })
+        })
+      },
+      setUpdateThumbs(article_id) {
+        uni.showLoading()
+        this.$api.update_thumbsup({
+          article_id
+        }).then((res) => {
+          this.formData.is_thumbs_up = true
+          this.formData.thumbs_up_count++
+          uni.hideLoading()
+          uni.showToast({
+            title: res.msg
           })
         })
       }

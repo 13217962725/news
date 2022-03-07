@@ -37,6 +37,11 @@
     // onLoad在页面,created在组件
     created() {
       // TODO tab 还没有赋值
+      uni.$on('update_article', () => {
+        this.listCatchData = {}
+        this.load = {}
+        this.getList(this.activeIndex)
+      })
     },
     watch: {
       tab(newVal) {
